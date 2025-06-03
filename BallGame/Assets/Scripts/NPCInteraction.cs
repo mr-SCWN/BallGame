@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;  
 
 public class NPCInteraction : MonoBehaviour
 {
@@ -11,6 +12,15 @@ public class NPCInteraction : MonoBehaviour
     [Header("Reference to DialogueManager (assign in Inspector)")]
     public DialogueManager dialogueManager;
 
+    [Header("UI hint to show when player is in range")]
+    public GameObject interactHint;
+
+        private void Awake()
+    {
+        
+        if (interactHint != null)
+            interactHint.SetActive(false);
+    }
     private bool playerInRange = false;
 
     private void OnTriggerEnter(Collider other)
@@ -18,6 +28,8 @@ public class NPCInteraction : MonoBehaviour
         if (other.CompareTag(playerTag))
         {
             playerInRange = true;
+            if (interactHint != null)
+                interactHint.SetActive(true);
         }
     }
 
@@ -26,6 +38,8 @@ public class NPCInteraction : MonoBehaviour
         if (other.CompareTag(playerTag))
         {
             playerInRange = false;
+            if (interactHint != null)
+                interactHint.SetActive(false);
         }
     }
 
@@ -36,6 +50,10 @@ public class NPCInteraction : MonoBehaviour
         {
             if (dialogueManager != null)
             {
+                
+                if (interactHint != null)
+                    interactHint.SetActive(false);
+
                 dialogueManager.StartDialogue();
             }
             else
